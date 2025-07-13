@@ -1,0 +1,20 @@
+
+_________________COMMANDE GITHUUB______________________
+
+--> Initialisation
+    - git init
+_______________________________________________________
+--> Relier le projet local au repository
+
+    - git remote add origin https://github.com/Jean-Emmanuel-dev/_app_transfert_.git
+_______________________________________________________
+--> Ajouter les fichier au repository
+    - git add . (ajoute tous les fichier)
+    - git add "nom_fichier"
+_______________________________________________________
+    -> Tranfert des fichier vers le repository:
+        - git commit -m "nom_de_commit"
+        - git push --set-upstream origin master ou git push
+_______________________________________________________
+--> Mettre à lour notre version local:
+    - git pull
