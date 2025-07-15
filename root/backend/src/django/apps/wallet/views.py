@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import Wallet
+from .serializers import WalletSerializer
+from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
+class WalletViewSet(viewsets.ModelViewSet):
+    queryset = Wallet.objects.all()
+    serializer_class = WalletSerializer
+    permission_classes = [IsAuthenticated]

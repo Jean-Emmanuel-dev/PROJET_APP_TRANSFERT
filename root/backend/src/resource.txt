@@ -1,0 +1,137 @@
+
+-> Commande pour la création d'un projet django: 
+  python django-admin startproject <<nom du projet>>
+  
+->Commande pour la création d'une plication django: 
+   python manage.py startapp <<nom de l'application>>
+
+
+->venv: 
+ cd /home/jean/Bureau/PROJET_APP_TRANSFERT/root/backend/src/.venv/bin
+ source activate
+
+->Mange server: 
+ cd /home/jean/Bureau/FORMATION_PYTHON/Fichier_de_cours_0_ieme_enrg/Projet_py/Django_web_site/src
+ pyhton manage.py runserver
+
+-> migration de models:
+ cd /home/jean/Bureau/FORMATION_PYTHON/Fichier_de_cours_0_ieme_enrg/Projet_py/Django_web_site/src
+ python manage.py makemigrations <nom de l'app>
+
+-> migration vers la base de donnée:
+  cd /home/jean/Bureau/FORMATION_PYTHON/Fichier_de_cours_0_ieme_enrg/Projet_py/Django_web_site/src
+  python manage.py migrate <nom de l'app>
+
+-> Interpreteur python interactif:
+  cd /home/jean/Bureau/FORMATION_PYTHON/Fichier_de_cours_0_ieme_enrg/Projet_py/Django_web_site/src
+  python manage.py shell
+
+-> Création d'un superuser:
+  cd /home/jean/Bureau/FORMATION_PYTHON/Fichier_de_cours_0_ieme_enrg/Projet_py/Django_web_site/src
+  python manage.py createsuperuser
+
+#################################REQUÊTES##################################
+------------------------------------------------------------------------
+    << BlogPost est ici une table créer dans le fichier models.py >>
+------------------------------------------------------------------------
+
+Dans notre interpreteur interactif:
+  ->Faire un import de notre class contenues dans models.py
+    EX: from blog.models import BlogPost
+
+-------  SELECTIONNER  -------------------------------------------------------------------------------------------------------------------------------------  
+  *Selectionner un enregistrement dans la base de donnée:
+    ->Faire d'abord les importations des classes contenues dans models.py
+        from blog.models import BlogPost
+    ->Ensuite la selection
+        from blog.models import BlogPost
+        BlogPost.objects.get(pk=2) # pk est la clé primaire (id=2)
+
+-------  AJOUTER  -------------------------------------------------------------------------------------------------------------------------------------
+  *Ajouter un enregistrement dans la base de donnée:
+    ->Faire d'abord les importations des classes contenues dans models.py
+        from blog.models import BlogPost
+    ->Ensuite la selection
+      BlogPost.objects.create(titre="Le Titre", auteur="Nom de l'auteur") # permet d'ajouter dans la table titre et auteur
+
+-------  MODIFIER  ------------------------------------------------------------------------------------------------------------------------------------
+  *Modifier un enregistrement dans la base de donnée:
+    ->Faire d'abord les importations des classes contenues dans models.py
+        from blog.models import BlogPost
+    ->Ensuite la selection
+        mdf = BlogPost.objects.get(pk=2) # Pour l'enregistrement avec la clé 2
+        mdf.titre = "Anneaux"            # Modifie dans la table titre
+        mdf.auteur = "AAA"               # Modifie dans la table auteur
+        mdf.save()                       # Enregistre les modifications dans la base de donnée
+
+-------  SUPPRIMER  -----------------------------------------------------------------------------------------------------------------------------------    
+  *Supprimer un enregistrement dans la base de donnée:
+    ->Faire d'abord les importations des classes contenues dans models.py
+        from blog.models import BlogPost
+    ->Ensuite la selection
+        BlogPost.objects.all().delete() # permet de supprimer tous les enregistrement dans la base de donnée
+    --------------
+        sup = BlogPost.objects.all()
+        sup[0,3].delete() # permet de supprimer un enregistrement dans la base de donnée à partir du numero de sa clé-1
+
+-------  RECHERCHE  ---------------------------------------------------------------------------------------------------------------------------------
+  *Rechercher des enregistrement dans la base de donnée:
+    ->Faire d'abord les importations des classes contenues dans models.py
+      from blog.models import BlogPost
+      import datetime
+    ->Ensuite la selection
+      BlogPost.object.filter(date="2025-12-23")                 # rechercher dans la base de donnée les enregistrements dont la date est 2025-12-23
+      BlogPost.object.filter(date__year="2021")                 # rechercher dans la base de donnée les enregistrements dont l'année est 2021
+      BlogPost.object.filter(date__month="12")                  # rechercher dans la base de donnée les enregistrements dont le mois est décembre
+      BlogPost.object.filter(date__gte==datetime.date.today())  # rechercher dans la base de donnée enregiles enregistrements dont la date est aujourd'hui ou plus tard
+      BlogPost.object.exclude(date="2025-12-23")                # rechercher dans la base de donnée les enregistrements dont la date est différent de 2025-12-23
+
+-------  CLE ETRANGERE  ---------------------------------------------------------------------------------------------------------------------------------
+  *Ajouter une clé étrangère dans la base de donnée: relation plusieurs à un:
+    ->Faire d'abord les importations des classes contenues dans models.py
+      from blog.models import BlogPost
+      from django.contrib.auth.models import User
+    ->Ensuite la selection
+      add_key = BlogPost.objects.get(pk=2)        # Selectionne l'enregistrement dont l'id est 2
+      user = User.objects.get(pk=1)               # Selectionne l'utilisateur dont l'id est 1
+      add_key.athor = user                        # Ajoute la clé étrangère dans la table auteur
+      add_key.save()                              # Enregistre les modifications dans la base de donnée
+
+  *Ajouter une clé étrangère dans la base de donnée: relation plusieurs à plusieurs:
+    ->Faire d'abord les importations des classes contenues dans models.py
+      from blog.models import BlogPost, Category
+    ->Ensuite la selection
+      cat1 = Category.objects.get(pk=1)           # Selectionne l'enregistrement dont l'id est 1
+      cat2 = Category.objects.get(pk=2)           # Selectionne l'enregistrement dont l'id est 2
+      blog_p = BlobPost.objects.get(pk=1)         # Selectionne l'enregistrement dont l'id est 1
+      blog_p.categories.add(cat1, cat2)           # Ajoute les deux clé dans la nouvelle table créer sans affecter les elements déjà existans
+      blog_p.categories.set([cat1, cat2])         # Ajoute les deux clé dans la nouvelle table créer en supprimant tous les present dans la table
+
+
+
+    *Supprimer une clé dans la relation plusieurs à plusieurs:
+      ->Faire d'abord les importations des classes contenues dans models.py
+        from blog.models import BlogPost, Category
+      ->Ensuite la selection
+        cat1 = Category.objects.get(pk=2)           # Selectionne l'enregistrement dont l'id est 2
+        blog_p = BlobPost.objects.get(pk=1)         # Selectionne l'enregistrement dont l'id est 1
+        blog_p.categories.remove(cat1)              # Supprime l'enregistrement dont l'id est 2 de la nouvelle table créer
+
+        blog_p.category.clear()                     # Supprime tous les enregistrements de la nouvelle table créer
+  
+  *Acceder aux relation inverse dans une relation plusieurs à plusieurs dans la basse de doonée:
+    Exemple:
+      from blog.models import BlogPost, Category
+      cat1 = Category.objets.get(pk=1)
+      cat1.blogpost_set.all()
+  
+
+
+
+
+
+
+
+
+
+
