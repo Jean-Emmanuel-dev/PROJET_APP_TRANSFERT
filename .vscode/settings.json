@@ -1,5 +1,10 @@
 {
     "python.analysis.extraPaths": [
-        "./root/backend/src/django"
+        "./root/backend/src/core",
+        "./root/backend/src/apps/users",
+        "./root/backend/src/apps/wallet",
+        "./root/backend/src/apps/transactions",
+        "./root/backend/src/apps/notifications",
+        "./root/backend/src/apps"
     ]
 }
