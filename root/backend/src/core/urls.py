@@ -24,3 +24,33 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+
+# Swagger pour les tests
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
+
+schema_view = get_schema_view(
+  openapi.Info(
+    title="API FinTech",
+    default_version='v1',
+    description="Documentation interactive de l'API",
+  ),
+  public=True,
+  authentication_classes=(JWTAuthentication,),
+  permission_classes=(permissions.AllowAny,),
+)
+
+urlpatterns += [
+  path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+]
+
+
+# Ajout de la vue pour obtenir les informations de l'utilisateur connecté
+from users.views import MeView
+
+urlpatterns += [
+    path('api/me/', MeView.as_view(), name='me'),
+]
+
